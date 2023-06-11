@@ -1,0 +1,25 @@
+.Modal {
+  width: max-content;
+
+  &__Backdrop {
+    position: fixed;
+    inset: 0;
+    background: var(--heading-clr);
+    opacity: .4;
+  }
+
+  &__Content {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    & > div {
+      background: var(--mode-clr);
+      padding: var(--spacing-md);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+    }
+  }
+}
