@@ -14,17 +14,17 @@ export default function App() {
   return (
     <BrowserRouter>
       <Modal
-        title='Test Title'
+        identifier='Test Title'
         content={(
           <div>
             <p>Welcome</p>
             <Modal
-              title='Test Title 1'
+              identifier='Test Title 1'
               content={(
                 <div>
                   <p>Welcome 1</p>
                   <Modal
-                    title='Test Title 2'
+                    identifier='Test Title 2'
                     content={(
                       <p>Welcome 2</p>
                     )}

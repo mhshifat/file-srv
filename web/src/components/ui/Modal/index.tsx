@@ -7,20 +7,20 @@ import { hashText } from '../../../utils';
 import { motion } from 'framer-motion';
 
 interface ModalProps {
-  title: string;
+  identifier: string;
   content: ReactElement;
 }
 
 const BACKDROP_CLASS_NAME = 'modal-backdrop';
 const CONTENT_CLASS_NAME = 'modal-content';
-export default function Modal({ children, title, content }: PropsWithChildren<ModalProps>) {
+export default function Modal({ children, identifier: uniqueTitle, content }: PropsWithChildren<ModalProps>) {
   const navigate = useNavigate();
   const { search } = useLocation();
   const [open, setOpen] = useState(false);
 
   const identifier = useMemo(() => {
-    return hashText(title)
-  }, [title]);
+    return hashText(uniqueTitle)
+  }, [uniqueTitle]);
   const toggleModal = useCallback(() => {
     const newValue = !open;
     const urlSearchParams = new URLSearchParams(search);
