@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 1.5rem;
-  width: min(400px, calc(100vw - 4rem));
+  width: min(500px, calc(100vw - 4rem));
 
   &__Header {
     display: flex;
@@ -107,11 +107,26 @@
       justify-content: space-between;
       width: 100%;
       margin-bottom: 2px;
+      margin-top: -6px;
 
-      & > span {
-        font-size: 1.2rem;
-        font-weight: 500;
+      & > button {
+        border: none;
+        outline: none;
+        background: transparent;
+        text-overflow: ellipsis;
+        overflow: hidden; 
+        width: 30ch; 
+        white-space: nowrap;
+      }
+
+      & > div {
         color: hsl(var(--primary-clr), .5);
+
+        & > span {
+          font-size: 1.2rem;
+          font-weight: 500;
+          color: hsl(var(--primary-clr), .5);
+        }
       }
     }
   }

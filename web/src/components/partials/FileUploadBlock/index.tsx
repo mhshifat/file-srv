@@ -1,8 +1,25 @@
 import { Label } from "..";
+import { useFileUpload } from "../../../hooks";
+import { IUploadProgressResult } from "../../../hooks/useFileUpload";
 import { ProgressBar } from "../../ui";
 import classes from "./FileUploadBlock.module.scss";
+import { useState } from 'react';
 
 export default function FileUploadBlock() {
+  const [fileUploadProgress, setFileUploadProgress] = useState<IUploadProgressResult[]>([]);
+  const { handleFileUpload } = useFileUpload('http://localhost:8000/api/v1/files/upload', {
+    onProgress: (progress) => {
+      // console.log(progress);
+      setFileUploadProgress((values) => {
+        const newValues = [...values];
+        const existing = newValues.findIndex(i => i.fileName === progress.fileName);
+        if (existing === -1) newValues.push(progress);
+        else newValues.splice(existing, 1, progress);
+        return newValues;
+      })
+    }
+  });
+
 	return (
 		<div className={classes.FileUploadBlock}>
 			<div className={classes.FileUploadBlock__Header}>
@@ -13,7 +30,7 @@ export default function FileUploadBlock() {
 				</p>
 			</div>
 
-			<div className={classes.FileUploadBlock__Area}>
+			{!fileUploadProgress.length && <div className={classes.FileUploadBlock__Area}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					shapeRendering="geometricPrecision"
@@ -32,18 +49,18 @@ export default function FileUploadBlock() {
 				<small>
 					or{" "}
 					<label>
-						<input type="file" hidden />
+						<input type="file" hidden multiple onChange={(e) => handleFileUpload(e.target.files)} />
 						<span>browse files</span>
 					</label>{" "}
 					on your computer
 				</small>
-			</div>
+			</div>}
 
-      <div className={classes.FileUploadBlock__UploadedFiles}>
+      {!!fileUploadProgress.length && <div className={classes.FileUploadBlock__UploadedFiles}>
         <Label as='h3'>Uploaded Files</Label>
 
-        {new Array(5).fill('').map(() => (
-          <div className={classes.FileUploadBlock__UploadedFile}>
+        {fileUploadProgress.map((item) => (
+          <div key={item.fileName} className={classes.FileUploadBlock__UploadedFile}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               shapeRendering="geometricPrecision"
@@ -58,12 +75,19 @@ export default function FileUploadBlock() {
             </svg>
 
             <div className={classes.FileUploadBlock__UploadedFileInfo}>
-              <h3>File Name <span>60%</span></h3>
-              <ProgressBar />
+              <h3>
+                <button title={item.fileName}>{item.fileName}</button>
+                <div>
+                  <span>{item.percentage}%</span> -&nbsp;
+                  <span>{item.kbps} kb/s</span> -&nbsp;
+                  <span>{String(item.minutes).padStart(2, '0')}:{String(item.seconds).padStart(2, '0')}</span>
+                </div>
+              </h3>
+              <ProgressBar percentage={+item.percentage} />
             </div>
           </div>
         ))}
-      </div>
+      </div>}
 		</div>
 	);
 }

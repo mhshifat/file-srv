@@ -1,9 +1,13 @@
 import classes from './ProgressBar.module.scss';
 
-export default function ProgressBar() {
+interface ProgressBarProps {
+  percentage: number;
+}
+
+export default function ProgressBar({ percentage = 0 }: ProgressBarProps) {
   return (
     <div className={classes.ProgressBar}>
-      <span />
+      <span style={{ width: `${percentage}%` }} />
     </div>
   )
 }

@@ -2,7 +2,7 @@
   display: flex;
     align-items: center;
     width: 100%;
-    background: hsl(var(--primary-clr), .5);
+    background: hsl(var(--secondary-clr), .5);
     height: 4px;
     border-radius: 10px;
     overflow: hidden;
@@ -13,7 +13,9 @@
       justify-content: center;
       border-radius: inherit;
       width: 20%;
-      background: hsl(var(--primary-clr));
+      background: hsl(var(--secondary-clr));
       height: 100%;
+      will-change: width;
+      transition: width 200ms ease-in-out;
     }
 }
