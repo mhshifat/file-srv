@@ -77,7 +77,7 @@ export default function Modal({ children, identifier: uniqueTitle, content }: Pr
           <div>
             <div id={identifier} className={classnames(BACKDROP_CLASS_NAME, classes.Modal__Backdrop)} />
             <div className={classnames(CONTENT_CLASS_NAME, classes.Modal__Content)} onClick={toggleModal}>
-              <motion.div initial={{ translateY: '20px' }} animate={{ translateY: '0px' }} onClick={(e) => e.stopPropagation()}>
+              <motion.div initial={{ transform: 'translateZ(0) translateY(20px)', willChange: 'transform' }} animate={{ transform: 'translateZ(0) translateY(0px)' }} onClick={(e) => e.stopPropagation()}>
                 {content}
               </motion.div>
             </div>

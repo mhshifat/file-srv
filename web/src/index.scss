@@ -3,12 +3,13 @@
 :root {
   --primary-font: 'Inter', sans-serif;
 
-  --primary-clr: #2C4CED;
-  --secondary-clr: #6D8AFF;
+  --primary-clr: 230, 84%, 55%;
+  --secondary-clr: 228, 100%, 71%;
 
-  --heading-clr: #081E57;
+  --heading-clr: 223, 83%, 19%;
 
-  --mode-clr: #FFFFFF;
+  --mode-clr: 0, 0%, 100%;
+  --disabled-clr: 0, 0%, 83%;
 
   --radius: 10px;
   --radius-sm: 5px;

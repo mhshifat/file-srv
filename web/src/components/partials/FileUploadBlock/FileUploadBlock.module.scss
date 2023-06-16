@@ -1,0 +1,118 @@
+.FileUploadBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1.5rem;
+  width: min(400px, calc(100vw - 4rem));
+
+  &__Header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    font-family: var(--primary-font);
+    margin-top: 2rem;
+
+    & > h3 {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: hsl(var(--heading-clr));
+    }
+
+    & > p {
+      color: hsl(var(--heading-clr), .6);
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  &__Area {
+    border: 2px dashed hsl(var(--secondary-clr), 0.3);
+    padding: var(--spacing-md);
+    border-radius: 5px;
+    position: relative;
+    color: hsl(var(--heading-clr));
+    z-index: 1;
+    isolation: isolate;
+    margin: 2rem 0 0 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    & > svg {
+      margin: 1rem 0;
+      fill: hsl(var(--primary-clr), .5);
+    }
+
+    & span {
+      color: hsl(var(--primary-clr), .5);
+      font-weight: 600;
+    }
+
+    & label {
+      cursor: pointer;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: hsl(var(--secondary-clr));
+      z-index: -1;
+      opacity: .1;
+    }
+  }
+
+  &__UploadedFiles {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 2rem;
+  }
+
+  &__UploadedFile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .7em 1em;
+    border: 1px solid hsl(var(--primary-clr), .2);
+    border-radius: 5px;
+    will-change: border-color;
+    transition: border-color 200ms ease-in-out;
+    overflow: hidden;
+
+    &:hover {
+      border-color: hsl(var(--primary-clr), .5);
+      box-shadow: var(--shadow);
+    }
+
+    & > svg {
+      fill: hsl(var(--primary-clr), .5);
+    }
+  }
+
+  &__UploadedFileInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    & > h3 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: hsl(var(--heading-clr));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 2px;
+
+      & > span {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: hsl(var(--primary-clr), .5);
+      }
+    }
+  }
+}

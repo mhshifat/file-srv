@@ -4,7 +4,7 @@
   &__Backdrop {
     position: fixed;
     inset: 0;
-    background: var(--heading-clr);
+    background: hsl(var(--heading-clr));
     opacity: .4;
   }
 
@@ -16,8 +16,7 @@
     align-items: center;
     
     & > div {
-      background: var(--mode-clr);
-      padding: var(--spacing-md);
+      background: hsl(var(--mode-clr));
       border-radius: var(--radius-sm);
       box-shadow: var(--shadow);
     }

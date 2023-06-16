@@ -2,6 +2,7 @@ import { useState } from 'react'
 import useFileUpload from './hooks/useFileUpload';
 import { Modal } from './components/ui';
 import { BrowserRouter } from 'react-router-dom';
+import { FileUploadBlock } from './components/partials';
 
 export default function App() {
   const [count, setCount] = useState(0);
@@ -15,29 +16,7 @@ export default function App() {
     <BrowserRouter>
       <Modal
         identifier='Test Title'
-        content={(
-          <div>
-            <p>Welcome</p>
-            <Modal
-              identifier='Test Title 1'
-              content={(
-                <div>
-                  <p>Welcome 1</p>
-                  <Modal
-                    identifier='Test Title 2'
-                    content={(
-                      <p>Welcome 2</p>
-                    )}
-                  >
-                    <button>Click Me 2</button>
-                  </Modal>
-                </div>
-              )}
-            >
-              <button>Click Me 1</button>
-            </Modal>
-          </div>
-        )}
+        content={<FileUploadBlock />}
       >
         <button>Click Me</button>
       </Modal>

@@ -1,0 +1,19 @@
+.ProgressBar {
+  display: flex;
+    align-items: center;
+    width: 100%;
+    background: hsl(var(--primary-clr), .5);
+    height: 4px;
+    border-radius: 10px;
+    overflow: hidden;
+
+    & > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: inherit;
+      width: 20%;
+      background: hsl(var(--primary-clr));
+      height: 100%;
+    }
+}
