@@ -14,7 +14,7 @@ export default function App() {
         content={(
           <>
             {!showFileList && <FileUploadBlock onSuccess={(results) => setShowFileList(!!results.length)} />}
-            <FileList />
+            {showFileList && <FileList />}
           </>
         )}
       >

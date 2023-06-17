@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { FileService } from "./service";
-import { IFileDocument, IFileUploadQuery, SuccessResponse } from "../../../../interfaces";
+import { IFileDocument, IFileUploadQuery, IGetFilesQuery, SuccessResponse } from "../../../../interfaces";
 import { fileUploadQuerySchema } from "./validations";
 
 export class FileController {
   private readonly service = new FileService();
 
   getAll = async (req: Request, res: Response<SuccessResponse<IFileDocument[]>>) => {
-    const records = await this.service.findAll();
+    const query = req.query as unknown as IGetFilesQuery;
+    const records = await this.service.findAll(query);
     return res.status(200).json({
       status: 200,
       success: true,

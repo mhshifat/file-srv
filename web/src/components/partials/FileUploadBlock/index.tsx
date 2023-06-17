@@ -3,13 +3,14 @@ import { useFileUpload } from "../../../hooks";
 import { IUploadProgressResult } from "../../../hooks/useFileUpload";
 import { ProgressBar } from "../../ui";
 import classes from "./FileUploadBlock.module.scss";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface FileUploadBlockProps {
   onSuccess: (results: IUploadProgressResult[]) => void;
 }
 
 export default function FileUploadBlock({ onSuccess }: FileUploadBlockProps) {
+  const [showSuccess, setShowSuccess] = useState(false)
 	const [fileUploadProgress, setFileUploadProgress] = useState<
 		IUploadProgressResult[]
 	>([]);
@@ -32,13 +33,27 @@ export default function FileUploadBlock({ onSuccess }: FileUploadBlockProps) {
 
   const isFileUploadsComplete = useMemo(() => {
     const isSuccess = !!fileUploadProgress.length && fileUploadProgress.every(i => i.percentage === '100');
-    isSuccess && onSuccess?.(fileUploadProgress);
+    isSuccess && setTimeout(() => {
+      onSuccess?.(fileUploadProgress);
+    }, 5000);
     return isSuccess;
   }, [fileUploadProgress, onSuccess])
 
+  useEffect(() => {
+    let timer: number | undefined = undefined;
+    if (isFileUploadsComplete) timer = setTimeout(() => {
+      setShowSuccess(true);
+    }, 3000);
+    else setShowSuccess(false);
+
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [isFileUploadsComplete])
+
 	return (
 		<div className={classes.FileUploadBlock}>
-			{!isFileUploadsComplete && <div className={classes.FileUploadBlock__Header}>
+			{!showSuccess && <div className={classes.FileUploadBlock__Header}>
 				<h3>Upload Files</h3>
 				<p>
 					Upload documents you want to share
@@ -79,7 +94,7 @@ export default function FileUploadBlock({ onSuccess }: FileUploadBlockProps) {
 				</div>
 			)}
 
-			{!isFileUploadsComplete && !!fileUploadProgress.length && (
+			{!showSuccess && !!fileUploadProgress.length && (
 				<div className={classes.FileUploadBlock__UploadedFiles}>
 					<Label as="h3">Uploaded Files</Label>
 
@@ -120,7 +135,7 @@ export default function FileUploadBlock({ onSuccess }: FileUploadBlockProps) {
 				</div>
 			)}
 
-			{isFileUploadsComplete && <div className={classes.FileUploadBlock__SuccessMsg}>
+			{showSuccess && <div className={classes.FileUploadBlock__SuccessMsg}>
 				<svg
 					className="svg-icon"
 					style={{

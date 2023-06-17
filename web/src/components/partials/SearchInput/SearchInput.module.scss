@@ -1,0 +1,14 @@
+.SearchInput {
+  &__SVG {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 1rem;
+
+    & > svg {
+      & > path {
+        stroke: hsl(var(--secondary-clr));
+      }
+    }
+  }
+}

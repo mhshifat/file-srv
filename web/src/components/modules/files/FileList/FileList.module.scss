@@ -17,6 +17,7 @@
       fill: hsl(var(--secondary-clr));
       width: 2.5rem;
       height: 2.5rem;
+      flex-shrink: 0;
       
       & > path {
         fill: hsl(var(--secondary-clr));
