@@ -1,0 +1,19 @@
+.Box {
+  width: 100%;
+
+  &__Flex {
+    display: flex;
+  }
+
+  &__DirectionCol {
+    flex-direction: column;
+  }
+
+  &__JustifyCenter {
+    justify-content: center;
+  }
+
+  &__AlignCenter {
+    align-items: center;
+  }
+}

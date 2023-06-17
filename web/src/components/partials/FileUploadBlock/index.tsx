@@ -32,7 +32,7 @@ export default function FileUploadBlock({ onSuccess }: FileUploadBlockProps) {
 
   const isFileUploadsComplete = useMemo(() => {
     const isSuccess = !!fileUploadProgress.length && fileUploadProgress.every(i => i.percentage === '100');
-    onSuccess?.(fileUploadProgress);
+    isSuccess && onSuccess?.(fileUploadProgress);
     return isSuccess;
   }, [fileUploadProgress, onSuccess])
 

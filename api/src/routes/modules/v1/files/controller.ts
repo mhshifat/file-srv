@@ -6,6 +6,15 @@ import { fileUploadQuerySchema } from "./validations";
 export class FileController {
   private readonly service = new FileService();
 
+  getAll = async (req: Request, res: Response<SuccessResponse<IFileDocument[]>>) => {
+    const records = await this.service.findAll();
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      data: records
+    })
+  }
+
   upload = async (req: Request, res: Response<SuccessResponse<IFileDocument | undefined>>) => {
     await fileUploadQuerySchema.parse(req.query);
     const { complete, filename } = req.query as unknown as IFileUploadQuery;

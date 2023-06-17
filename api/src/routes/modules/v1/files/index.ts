@@ -5,4 +5,5 @@ import { catchAsyncHandler } from "../../../middlewares";
 const controller = new FileController();
 export const FileRouter = Router();
 
+FileRouter.route('/').get(catchAsyncHandler(controller.getAll));
 FileRouter.route('/upload').post(catchAsyncHandler(controller.upload));

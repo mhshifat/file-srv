@@ -29,4 +29,8 @@ export class FileService {
   createRecord = (doc: Omit<IFileDocument, 'created_at' | 'updated_at' | 'id'>) => {
     return FileModel.createDoc(doc);
   }
+
+  findAll = () => {
+    return FileModel.find({}) as unknown as IFileDocument[];
+  }
 }

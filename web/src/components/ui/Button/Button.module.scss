@@ -1,0 +1,42 @@
+.Button {
+  outline-color: transparent;
+  cursor: pointer;
+  padding: .3em .8em;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 1.3rem;
+  font-weight: 500;
+
+  &__Primary {
+    background: hsl(var(--primary-clr), 5);
+    border-color: hsl(var(--primary-clr));
+    color: hsl(var(--mode-clr));
+    will-change: background, color;
+    transition: 
+      background 200ms ease-in-out,
+      color 100ms ease-in-out;
+
+    &:hover {
+      box-shadow: var(--shadow);
+      background: hsl(var(--mode-clr));
+      color: hsl(var(--primary-clr), 5);
+    }
+  }
+
+  &__Secondary {
+    background: hsl(var(--secondary-clr), 5);
+    border-color: hsl(var(--secondary-clr));
+    color: hsl(var(--mode-clr));
+    will-change: background, color;
+    transition: 
+      background 200ms ease-in-out,
+      color 100ms ease-in-out;
+
+    &:hover {
+      box-shadow: var(--shadow);
+      background: hsl(var(--mode-clr));
+      color: hsl(var(--secondary-clr), 5);
+    }
+  }
+}
