@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DataNotFound, Label, Scrollable, SearchInput } from '../../../partials';
-import { Box, Button, Input } from '../../../ui';
+import { Box, Button } from '../../../ui';
 import classes from './FileList.module.scss';
 import { IFile } from '../../../../typings';
 
