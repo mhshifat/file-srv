@@ -130,4 +130,30 @@
       }
     }
   }
+
+  &__SuccessMsg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    gap: 5px;
+
+    & > svg {
+      width: 6.5rem !important;
+      height: 6.5rem !important;
+      fill: hsl(var(--primary-clr), .5) !important;
+    }
+
+    & > h3 {
+      color: hsl(var(--heading-clr));
+    }
+
+    & > p {
+      line-height: 1;
+      color: hsl(var(--heading-clr), .6);
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
 }

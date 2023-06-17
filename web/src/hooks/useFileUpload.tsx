@@ -87,19 +87,6 @@ export default function useFileUpload(
 						const time = (file.size - chunkId * CHUNK_SIZE + CHUNK_SIZE) / bps;
 						const seconds = Math.round(time % 60);
 						const minutes = Math.round(time / 60);
-						// console.log({
-						// 	completedPercentage,
-						// 	chunkId,
-						// 	totalChunk,
-						// 	totalByteLength,
-						// 	startTime,
-						// 	duration,
-						// 	bps,
-						// 	kbps,
-						// 	time,
-						// 	seconds,
-						// 	minutes,
-						// });
 						functionRefs.current?.onProgress?.({
 							fileName,
 							percentage: String(completedPercentage),
