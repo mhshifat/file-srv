@@ -5,4 +5,10 @@
   font-size: 15px;
   line-height: 22px;
   color: hsl(var(--heading-clr));
+  
+  &__AsLabel {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: hsl(var(--heading-clr), .5);
+  }
 }

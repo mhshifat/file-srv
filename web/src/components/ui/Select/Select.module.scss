@@ -1,0 +1,50 @@
+.Select {
+  width: 100%;
+  border: 1px solid hsl(var(--primary-clr), .1);
+  border-radius: 5px;
+  padding: .2em 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  will-change: border;
+  transition: border 200ms ease-in-out;
+  position: relative;
+
+  & > select {
+    border: none;
+    outline-color: transparent;
+    height: 100%;
+    flex: 1;
+    padding: 0 1rem;
+    height: 32px;
+    appearance: none;
+
+    &,
+    &::placeholder {
+      font-family: var(--primary-font);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: hsl(var(--heading-clr));
+    }
+  }
+
+  &:focus-within {
+    border: 1px solid hsl(var(--primary-clr), .5);
+  }
+
+  & > i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    padding: 0 1rem;
+
+    & > svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+.Textarea {
+  width: 100%;
+  border: 1px solid hsl(var(--primary-clr), .1);
+  border-radius: 5px;
+  padding: .2em 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  will-change: border;
+  transition: border 200ms ease-in-out;
+
+  & > textarea {
+    border: none;
+    outline-color: transparent;
+    height: 100%;
+    flex: 1;
+    padding: 0 1rem;
+    min-height: 100px;
+    resize: vertical;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &,
+    &::placeholder {
+      font-family: var(--primary-font);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: hsl(var(--heading-clr));
+    }
+  }
+
+  &:focus-within {
+    border: 1px solid hsl(var(--primary-clr), .5);
+  }
+}

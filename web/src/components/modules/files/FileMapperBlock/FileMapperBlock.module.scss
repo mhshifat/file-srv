@@ -1,0 +1,83 @@
+.FileMapperBlock {
+  padding: 1rem;
+  width: min(500px, calc(100vw - 4rem));
+
+  &__NotFoundMsg {
+    display: flex;
+    gap: 15px;
+    padding: 1em;
+    border: 1.5px solid hsl(var(--warning-clr));
+    border-radius: 5px;
+    background: hsl(var(--warning-clr), .05);
+
+    & > svg {
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      fill: hsl(var(--warning-clr));
+    }
+
+    & > div {
+      & > h3 {
+        font-size: 1.7rem;
+        font-weight: 700;
+        font-family: var(--primary-font);
+        color: hsl(var(--heading-clr));
+      }
+      & > p {
+        font-size: 1.4rem;
+        font-weight: 500;
+        font-family: var(--primary-font);
+        color: hsl(var(--heading-clr), .5);
+        margin-bottom: 1.5rem;
+        
+        & > strong {
+          color: hsl(var(--heading-clr));
+        }
+      }
+    }
+  }
+
+  &__Errors {
+    display: flex;
+    gap: 15px;
+    padding: 1em;
+    border: 1.5px solid hsl(var(--danger-clr));
+    border-radius: 5px;
+    background: hsl(var(--danger-clr), .05);
+    margin-bottom: 2rem;
+
+    & > svg {
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      fill: hsl(var(--danger-clr));
+    }
+
+    & > div {
+      & > h3 {
+        font-size: 1.7rem;
+        font-weight: 700;
+        font-family: var(--primary-font);
+        color: hsl(var(--heading-clr));
+      }
+
+      & > ul {
+        margin-top: 1rem;
+
+        & > li {
+          font-size: 1.4rem;
+          font-weight: 500;
+          font-family: var(--primary-font);
+          color: hsl(var(--heading-clr), .5);
+        }
+      }
+    }
+  }
+
+  &__Create {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
