@@ -1,0 +1,29 @@
+.ButtonGroup {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: .8rem;
+  background: hsl(var(--primary-clr), .1);
+  
+  & > button {
+    border: none;
+    outline-color: transparent;
+    font-size: 1.5rem;
+    font-family: var(--primary-font);
+    font-weight: 500;
+    color: hsl(var(--heading-clr), .7);
+    padding: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    background: transparent;
+  }
+  
+  & > * {
+    flex: 1;
+  }
+  
+  &__Active {
+    background: hsl(var(--primary-clr), .5) !important;
+    color: hsl(var(--mode-clr)) !important;
+  }
+}

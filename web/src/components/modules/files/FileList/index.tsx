@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { DataNotFound, Label, Scrollable, SearchInput } from '../../../partials';
-import { Box, Button } from '../../../ui';
+import { Box, Button, Modal } from '../../../ui';
 import classes from './FileList.module.scss';
 import { IFile } from '../../../../typings';
+import { FileMapperBlock } from '..';
 
 export default function FileList() {
   const [params, setParams] = useState({
@@ -45,7 +46,18 @@ export default function FileList() {
 
               <h3>{file.original_name}</h3>
 
-              <Button variant='secondary'>Select</Button>
+              <Modal
+                identifier='Import File Data'
+                content={(
+                  <>
+                    <FileMapperBlock
+                      fileId='64847d42d32dd3af71c2f8fe'
+                    />
+                  </>
+                )}
+              >
+                <Button variant='secondary'>Select</Button>
+              </Modal>
             </div>
           ))}
         </Box>

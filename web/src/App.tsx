@@ -1,8 +1,8 @@
 import { Modal } from './components/ui';
 import { BrowserRouter } from 'react-router-dom';
-import { FileUploadBlock } from './components/partials';
+import { ButtonGroup, FileUploadBlock } from './components/partials';
 import { useState } from 'react';
-import { FileList, FileMapperBlock } from './components/modules';
+import { FileList } from './components/modules';
 
 export default function App() {
   const [showFileList, setShowFileList] = useState(false);
@@ -13,20 +13,16 @@ export default function App() {
         identifier='Files Upload'
         content={(
           <>
-            {!showFileList && <FileUploadBlock onSuccess={(results) => setShowFileList(!!results.length)} />}
-            {showFileList && <FileList />}
-            <Modal
-              identifier='Import File Data'
-              content={(
+            <ButtonGroup>
+              {({ activeClassName }) => (
                 <>
-                  <FileMapperBlock
-                    fileId='64847d42d32dd3af71c2f8fe'
-                  />
+                  <button className={!showFileList ? activeClassName : ''} onClick={() => setShowFileList(false)}>Upload New</button>
+                  <button className={showFileList ? activeClassName : ''} onClick={() => setShowFileList(true)}>Use Existing</button>
                 </>
               )}
-            >
-              <button>Select</button>
-            </Modal>
+            </ButtonGroup>
+            {!showFileList && <FileUploadBlock onSuccess={(results) => setShowFileList(!!results.length)} />}
+            {showFileList && <FileList />}
           </>
         )}
       >

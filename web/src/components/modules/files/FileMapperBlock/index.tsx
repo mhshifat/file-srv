@@ -1,36 +1,50 @@
+import { IMapper } from "../../../../typings";
 import { getObjectProperties } from "../../../../utils";
-import { Label } from "../../../partials";
+import { DataNotFound, Label } from "../../../partials";
 import { Box, Button, Input, Select, Textarea } from "../../../ui";
+import { MapperList } from "../../mappers";
 import classes from "./FileMapperBlock.module.scss";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 interface FileMapperBlockProps {
 	fileId: string;
 }
 
+const createMapper = async (body: {
+  fileId: string;
+  mapperProperties: { property: string, type: string }[]
+  jsonInput: string;
+  name: string;
+}) => {
+  return fetch('http://localhost:8000/api/v1/files/mappers', {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then((res) => {
+    if (res.ok) return res.json();
+    throw res.body;
+  })
+}
+
+const getMappers = async (query: { fileId: string }, signal: AbortSignal) => {
+  const url = new URL('http://localhost:8000/api/v1/files/mappers');
+  if (query?.fileId) url.searchParams.set('fileId', query.fileId);
+  return fetch(url, {
+    signal
+  }).then((res) => {
+    if (res.ok) return res.json();
+    throw res.body;
+  })
+}
+
 export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
-  const [mappers, setMappers] = useState([]);
+  const [mappers, setMappers] = useState<IMapper[]>([]);
+  const [showCreateMapperBlock, setShowCreateMapperBlock] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [newMapperName, setNewMapperName] = useState('');
-	const [jsonInput, setJsonInput] = useState(
-		JSON.stringify(
-			{
-        name: "John Doe",
-        age: 30,
-        hobbies: [
-          "programming",
-          "gaming",
-          { category: "sports", activities: ["football", "basketball"] }
-        ],
-        address: {
-          home: 'address 1',
-          office: 'address 2',
-        }
-      },
-			undefined,
-			4
-		)
-	);
+	const [jsonInput, setJsonInput] = useState(JSON.stringify({}));
   const [mapperProperties, setMapperProperties] = useState<{ property: string; type: string }[]>([]);
 	const jsonInputProperties = useMemo(() => {
     return getObjectProperties(JSON.parse(jsonInput)).reduce((acc, val) => {
@@ -41,7 +55,7 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
     }, [])
   }, [jsonInput]);
 
-  const handleMapperCreate = useCallback(() => {
+  const handleMapperCreate = useCallback(async () => {
     const validateFields = () => {
       const errors = [];
       if (!newMapperName) errors.push('Mapper needs a name');
@@ -52,16 +66,30 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
     }
     const isValid = validateFields();
     if (!isValid) return;
-    console.log({
+    await createMapper({
       fileId,
       mapperProperties,
       jsonInput: JSON.stringify(JSON.parse(jsonInput)),
+      name: newMapperName
     });
   }, [mapperProperties, jsonInputProperties, newMapperName, jsonInput, fileId])
 
+  useEffect(() => {
+    const controller = new AbortController();
+    getMappers({ fileId }, controller.signal)
+      .then(({data}) => {
+        setMappers(data);
+      })
+      .catch(console.error)
+
+    return () => {
+      controller.abort();
+    }
+  }, [fileId])
+
 	return (
 		<div className={classes.FileMapperBlock}>
-			{!!mappers.length && <div className={classes.FileMapperBlock__NotFoundMsg}>
+			{!mappers.length && <div className={classes.FileMapperBlock__NotFoundMsg}>
 				<svg
 					fill="#000000"
 					width="800px"
@@ -80,7 +108,7 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
 						It seems you do not have a <strong>Mapper</strong> for this file,
 						please create one.
 					</p>
-					<Button variant="primary" size="md">
+					<Button variant="primary" size="md" onClick={() => setShowCreateMapperBlock(true)}>
 						Create
 					</Button>
 				</div>
@@ -107,7 +135,7 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
           </ul>
 				</div>
 			</div>}
-			<div className={classes.FileMapperBlock__Create}>
+			{showCreateMapperBlock && <div className={classes.FileMapperBlock__Create}>
 				<Label as="h3">Create a new Mapper</Label>
 
         <div>
@@ -141,7 +169,7 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
 
         <div>
 					<Label as="label">Required Fields Map</Label>
-          {jsonInputProperties.map(field => (
+          {!!jsonInputProperties.length && jsonInputProperties.map(field => (
             <Box display="flex" key={field}>
               <Input defaultValue={field} readOnly />
               <Select
@@ -167,12 +195,21 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
               />
             </Box>
           ))}
+          {!jsonInputProperties.length && (
+            <DataNotFound
+              text={<p>Please add your json input</p>}
+            />
+          )}
         </div>
 
         <div>
           <Button variant="secondary" size="lg" fluid onClick={handleMapperCreate}>Save</Button>
         </div>
-			</div>
+			</div>}
+      {!!mappers.length && !showCreateMapperBlock && <MapperList
+        mappers={mappers}
+        onCreateNew={() => setShowCreateMapperBlock(true)}
+      />}
 		</div>
 	);
 }
