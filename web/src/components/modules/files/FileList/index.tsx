@@ -51,7 +51,7 @@ export default function FileList() {
                 content={(
                   <>
                     <FileMapperBlock
-                      fileId='64847d42d32dd3af71c2f8fe'
+                      fileId={file.id}
                     />
                   </>
                 )}

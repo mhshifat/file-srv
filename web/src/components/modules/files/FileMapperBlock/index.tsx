@@ -40,6 +40,7 @@ const getMappers = async (query: { fileId: string }, signal: AbortSignal) => {
 }
 
 export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
+  const [loading, setLoading] = useState(false);
   const [mappers, setMappers] = useState<IMapper[]>([]);
   const [showCreateMapperBlock, setShowCreateMapperBlock] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -75,19 +76,27 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
   }, [mapperProperties, jsonInputProperties, newMapperName, jsonInput, fileId])
 
   useEffect(() => {
+    setLoading(true);
     const controller = new AbortController();
     getMappers({ fileId }, controller.signal)
       .then(({data}) => {
         setMappers(data);
       })
       .catch(console.error)
+      .finally(() => {
+        setLoading(false);
+      })
 
     return () => {
       controller.abort();
     }
   }, [fileId])
 
-	return (
+	return loading ? (
+    <div className={classes.FileMapperBlock}>
+      <p>Loading...</p>
+    </div>
+  ) : (
 		<div className={classes.FileMapperBlock}>
 			{!mappers.length && <div className={classes.FileMapperBlock__NotFoundMsg}>
 				<svg
