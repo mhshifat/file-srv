@@ -47,7 +47,7 @@ export default function FileList() {
               <h3>{file.original_name}</h3>
 
               <Modal
-                identifier='Import File Data'
+                identifier={'Import File Data' + file.id}
                 content={(
                   <>
                     <FileMapperBlock
