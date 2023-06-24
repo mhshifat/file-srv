@@ -16,6 +16,16 @@ export class FileController {
     })
   }
 
+  getFileStructure = async (req: Request, res: Response<SuccessResponse<unknown>>) => {
+    const params = req.params as unknown as { fileId: string };
+    const data = await this.service.getFileStructure(params.fileId);
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      data: data
+    })
+  }
+
   upload = async (req: Request, res: Response<SuccessResponse<IFileDocument | undefined>>) => {
     await fileUploadQuerySchema.parse(req.query);
     const { complete, filename } = req.query as unknown as IFileUploadQuery;

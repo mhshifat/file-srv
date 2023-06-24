@@ -8,6 +8,7 @@ export interface IMapperDocument extends IModel {
   properties: {
     property: string;
     type: string;
+    map_key: string;
   }[];
 }
 

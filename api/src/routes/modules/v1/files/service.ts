@@ -1,6 +1,6 @@
 import fs from 'fs';
 import util from 'util';
-import { uploadStrategy } from '../../../../services';
+import { fileParserStrategy, uploadStrategy } from '../../../../services';
 import { IFileDocument, IFileUploadQuery, IGetFilesQuery } from '../../../../interfaces';
 import { FileModel } from './model';
 import { FilterQuery } from 'mongoose';
@@ -35,5 +35,16 @@ export class FileService {
     const newQuery: FilterQuery<IFileDocument> = {}
     if (query.search) newQuery['$or'] = ['original_name'].map(item => ({ [item]: new RegExp(query.search!, 'i') }));
     return FileModel.find(newQuery) as unknown as IFileDocument[];
+  }
+
+  findById = async (id: string) => {
+    const file = await FileModel.findById(id);
+    if (!file) throw new Error("File not found");
+    return file as IFileDocument;
+  }
+
+  getFileStructure = async (id: string) => {
+    const file = await this.findById(id);
+    return await fileParserStrategy.getFirstObj(file);
   }
 }

@@ -31,4 +31,14 @@ export class MapperController {
       data: data
     })
   }
+
+  construct = async (req: Request, res: Response<SuccessResponse<unknown>>) => {
+    const params = req.params as { mapperId: string };
+    const results = await this.service.construct(params.mapperId);
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      data: results
+    })
+  }
 }

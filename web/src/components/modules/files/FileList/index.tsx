@@ -52,6 +52,9 @@ export default function FileList() {
                   <>
                     <FileMapperBlock
                       fileId={file.id}
+                      onComplete={() => {
+                        console.log('Complete');
+                      }}
                     />
                   </>
                 )}

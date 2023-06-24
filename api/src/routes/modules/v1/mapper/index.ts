@@ -8,3 +8,6 @@ export const MapperRouter = Router();
 MapperRouter.route('/')
   .get(catchAsyncHandler(controller.getAll))
   .post(catchAsyncHandler(controller.create));
+
+MapperRouter.route('/:mapperId/construct')
+  .post(catchAsyncHandler(controller.construct));

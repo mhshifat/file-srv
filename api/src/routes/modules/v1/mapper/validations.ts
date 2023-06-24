@@ -7,5 +7,6 @@ export const CreateMapperDtoSchema = z.object({
   mapperProperties: z.array(z.object({
     property: z.string(),
     type: z.string(),
+    map_key: z.string(),
   })) 
 });

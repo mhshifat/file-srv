@@ -8,7 +8,8 @@ const schema = new mongoose.Schema<IMapperDocument>({
   properties: [
     {
       property: { type: String, required: true },
-      type: { type: String, required: true }
+      type: { type: String, required: true },
+      map_key: { type: String, required: true }
     }
   ]
 }, {

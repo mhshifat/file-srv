@@ -4,10 +4,11 @@ import { DataNotFound, Label } from "../../../partials";
 import { Box, Button, Input, Select, Textarea } from "../../../ui";
 import { MapperList } from "../../mappers";
 import classes from "./FileMapperBlock.module.scss";
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 
 interface FileMapperBlockProps {
 	fileId: string;
+  onComplete: () => void;
 }
 
 const createMapper = async (body: {
@@ -39,7 +40,18 @@ const getMappers = async (query: { fileId: string }, signal: AbortSignal) => {
   })
 }
 
-export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
+const getFileContentStructure = async (query: { fileId: string }, signal: AbortSignal) => {
+  const url = new URL(`http://localhost:8000/api/v1/files/${query.fileId}/structure`);
+  return fetch(url, {
+    signal
+  }).then((res) => {
+    if (res.ok) return res.json();
+    throw res.body;
+  })
+}
+
+export default function FileMapperBlock({ fileId, onComplete }: FileMapperBlockProps) {
+  const onCompleteRef = useRef(onComplete);
   const [loading, setLoading] = useState(false);
   const [mappers, setMappers] = useState<IMapper[]>([]);
   const [showCreateMapperBlock, setShowCreateMapperBlock] = useState(false);
@@ -47,6 +59,7 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
   const [newMapperName, setNewMapperName] = useState('');
 	const [jsonInput, setJsonInput] = useState(JSON.stringify({}));
   const [mapperProperties, setMapperProperties] = useState<{ property: string; type: string }[]>([]);
+  const [fileStructure, setFileStructure] = useState(null);
 	const jsonInputProperties = useMemo(() => {
     return getObjectProperties(JSON.parse(jsonInput)).reduce((acc, val) => {
       const firstProperty = val.split('[')[0];
@@ -67,12 +80,15 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
     }
     const isValid = validateFields();
     if (!isValid) return;
-    await createMapper({
+    const payload = {
       fileId,
       mapperProperties,
       jsonInput: JSON.stringify(JSON.parse(jsonInput)),
       name: newMapperName
-    });
+    }
+    await createMapper(payload);
+    const controller = new AbortController();
+    getMappers({ fileId }, controller.signal);
   }, [mapperProperties, jsonInputProperties, newMapperName, jsonInput, fileId])
 
   useEffect(() => {
@@ -92,13 +108,30 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
     }
   }, [fileId])
 
+  useEffect(() => {
+    setLoading(true);
+    const controller = new AbortController();
+    getFileContentStructure({ fileId }, controller.signal)
+      .then(({data}) => {
+        setFileStructure(data);
+      })
+      .catch(console.error)
+      .finally(() => {
+        setLoading(false);
+      })
+
+    return () => {
+      controller.abort();
+    }
+  }, [fileId])
+
 	return loading ? (
     <div className={classes.FileMapperBlock}>
       <p>Loading...</p>
     </div>
   ) : (
 		<div className={classes.FileMapperBlock}>
-			{!mappers.length && <div className={classes.FileMapperBlock__NotFoundMsg}>
+			{!mappers.length && !showCreateMapperBlock && <div className={classes.FileMapperBlock__NotFoundMsg}>
 				<svg
 					fill="#000000"
 					width="800px"
@@ -193,6 +226,27 @@ export default function FileMapperBlock({ fileId }: FileMapperBlockProps) {
                     const payload = {
                       property: field,
                       type: value
+                    }
+                    if (idx === -1) newValues.push(payload);
+                    else {
+                      newValues.splice(idx, 1, payload)
+                    }
+                    return newValues;
+                  })
+                }}
+              />
+              <Select
+                options={Object.keys(fileStructure || []).map(key => ({
+                  label: key,
+                  value: key,
+                }))}
+                onChange={(value) => {
+                  setMapperProperties(values => {
+                    const newValues = [...values];
+                    const idx = newValues.findIndex(item => item.property === field);
+                    const payload = {
+                      ...newValues[idx],
+                      map_key: value
                     }
                     if (idx === -1) newValues.push(payload);
                     else {
