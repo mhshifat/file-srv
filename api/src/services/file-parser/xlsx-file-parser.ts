@@ -2,6 +2,26 @@ import XLSX from 'xlsx';
 import { FileParser, IFileDocument, IMapperDocument } from "../../interfaces";
 import { uploadStrategy } from "../file-upload";
 
+// {
+//   "name": "John Doe",
+//   "age": 30,
+//   "hobbies": [
+//     "programming",
+//     "gaming",
+//     { "category": "sports", "activities": ["football", "basketball"] }
+//   ],
+//   "educations": [
+//     {
+//       "institute": "ABC",
+//       "grade": "A+"
+//     }
+//   ],
+//   "addresses": {
+//     "home": "Address One",
+//     "office": "Address Two"
+//   }
+// }
+
 export class XLSXFileParserSrv implements FileParser {
   async parse(file: IFileDocument, mapper: IMapperDocument): Promise<unknown[]> {
     const contentBuffer = await uploadStrategy.get(file.key);

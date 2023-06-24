@@ -88,7 +88,14 @@ export default function FileMapperBlock({ fileId, onComplete }: FileMapperBlockP
     }
     await createMapper(payload);
     const controller = new AbortController();
-    getMappers({ fileId }, controller.signal);
+    getMappers({ fileId }, controller.signal)
+      .then(({data}) => {
+        setMappers(data);
+      })
+      .catch(console.error)
+      .finally(() => {
+        setLoading(false);
+      })
   }, [mapperProperties, jsonInputProperties, newMapperName, jsonInput, fileId])
 
   useEffect(() => {
